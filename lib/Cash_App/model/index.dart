@@ -1,4 +1,4 @@
-// 交易model
+/// 交易model
 import 'package:flutter_demo_collect/Cash_App/common/ca_enum.dart';
 
 class TransactionModel {
@@ -48,7 +48,7 @@ class TransactionModel {
   }
 }
 
-// 交易种类model
+/// 交易种类model
 class TransactionCategoryModel {
   /// 种类ID
   final String categoryPk;
@@ -79,30 +79,30 @@ class TransactionCategoryModel {
 
   // final MethodAdded? methodAdded;
   final String? mainCategoryPk;
-  const TransactionCategoryModel(
-      {required this.categoryPk,
-      required this.name,
-      this.colour,
-      this.iconName,
-      this.emojiIconName,
-      required this.dateCreated,
-      this.dateTimeModified,
-      required this.order,
-      required this.income,
-      // this.methodAdded,
-      this.mainCategoryPk});
+  const TransactionCategoryModel({
+    required this.categoryPk,
+    required this.name,
+    this.colour,
+    this.iconName,
+    this.emojiIconName,
+    required this.dateCreated,
+    this.dateTimeModified,
+    required this.order,
+    required this.income,
+    // this.methodAdded,
+    this.mainCategoryPk,
+  });
 }
 
 /// 交易种类Model和交易Model合在一起的Model
-
-class TransactionWithCategory {
+class TransactionWithCategoryModel {
   final TransactionCategoryModel category;
   final TransactionModel transaction;
   // final TransactionWallet? wallet;
   // final Budget? budget;
   // final Objective? objective;
   // final TransactionCategory? subCategory;
-  TransactionWithCategory({
+  TransactionWithCategoryModel({
     required this.category,
     required this.transaction,
     // this.wallet,
@@ -121,4 +121,94 @@ class TransactionWithCategory {
       // 'subCategory': subCategory
     };
   }
+}
+
+/// 搜索过滤条件
+class SearchFilters {
+  List<ExpenseIncome> expenseIncome;
+  bool? positiveCashFlow;
+  SearchFilters({
+    this.expenseIncome = const [],
+    this.positiveCashFlow, // 与 isIncome 类似，但包括任何正数（贷款）。
+  }) {
+    expenseIncome = expenseIncome.isEmpty ? [] : expenseIncome;
+    positiveCashFlow = positiveCashFlow;
+  }
+}
+
+/// home页面 饼图数据类型
+
+class CategoryWithTotalModel {
+  final TransactionCategoryModel category;
+  // final CategoryBudgetLimitModel? categoryBudgetLimit;
+  final double total;
+  final int transactionCount;
+
+  CategoryWithTotalModel({
+    required this.category,
+    required this.total,
+    this.transactionCount = 0,
+    // this.categoryBudgetLimit,
+  });
+
+  @override
+  String toString() {
+    return 'CategoryWithTotal {'
+        'category: ${category.name}, '
+        'total: $total, '
+        '}';
+  }
+
+  CategoryWithTotalModel copyWith({
+    TransactionCategoryModel? category,
+    // CategoryBudgetLimitModel? categoryBudgetLimit,
+    double? total,
+    int? transactionCount,
+  }) {
+    return CategoryWithTotalModel(
+      category: category ?? this.category,
+      // categoryBudgetLimit: categoryBudgetLimit ?? this.categoryBudgetLimit,
+      total: total ?? this.total,
+      transactionCount: transactionCount ?? this.transactionCount,
+    );
+  }
+}
+
+class CaBudgetModel {
+  /// 预算id
+  final String budgetPk;
+
+  /// 预算名称
+  final String name;
+
+  /// 预算金额
+  final double amount;
+
+  /// 预算颜色
+  final String? colour;
+
+  /// 预算开始时间
+  final DateTime startDate;
+
+  /// 预算结束时间
+  final DateTime endDate;
+
+  /// 钱包id
+  final List<String>? walletFks;
+
+  /// 类别id
+  final List<String>? categoryFks;
+  final List<String>? categoryFksExclude;
+
+  CaBudgetModel({
+    required this.budgetPk,
+    required this.name,
+    required this.amount,
+    this.colour,
+    required this.startDate,
+    required this.endDate,
+    this.walletFks,
+    this.categoryFks,
+    this.categoryFksExclude,
+  }) {}
 }

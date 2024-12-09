@@ -47,6 +47,10 @@ dependencies:
   confetti: ^0.8.0
   # 底部弹窗
   modal_bottom_sheet: ^3.0.0
+  # PageView 小部件将其高度调整为当前显示的页面。它接受与经典 PageView 相同的参数。
+  expandable_page_view: ^1.0.17
+  # chart图表插件
+  fl_chart: ^0.69.2
 
 dev_dependencies:
   flutter_test:

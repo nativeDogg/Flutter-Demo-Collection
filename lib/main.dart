@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_demo_collect/Cash_App/ca_home.dart';
+import 'package:flutter_demo_collect/Cash_App/ca_home_page.dart';
 import 'package:flutter_demo_collect/Food_App/model/recipe_model.dart';
-import 'package:flutter_demo_collect/Food_App/pages/home.dart';
-import 'package:flutter_demo_collect/Movie_App/pages/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +21,8 @@ class MyApp extends StatelessWidget {
       // 食物
       // home: FoodAppHomePage(recipeItems: recipeItem),
       // 记账
-      home: CashAppHomePage(),
+      // home: CashAppHomePage(),
+      home: CaHomePage(),
     );
   }
 }

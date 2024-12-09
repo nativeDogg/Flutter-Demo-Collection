@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_collect/Cash_App/common/ca_sliver.dart';
-import 'package:flutter_demo_collect/Cash_App/widgets/ca_month_selector.dart';
+import 'package:flutter_demo_collect/Cash_App/widgets/ca_month_transaction/ca_month_selector.dart';
 import 'package:flutter_demo_collect/Cash_App/widgets/ca_multi_direction_infinite_scroll.dart';
 import 'package:flutter_demo_collect/Cash_App/widgets/ca_transcation_list.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class CashAppHomePage extends StatefulWidget {
-  const CashAppHomePage({super.key});
+class CaViewAllTranscation extends StatefulWidget {
+  const CaViewAllTranscation({super.key});
 
   @override
-  State<CashAppHomePage> createState() => _CashAppHomePageState();
+  State<CaViewAllTranscation> createState() => _CaViewAllTranscationState();
 }
 
-class _CashAppHomePageState extends State<CashAppHomePage> {
+class _CaViewAllTranscationState extends State<CaViewAllTranscation> {
   // 将MonthSelector的状态类从_MonthSelectorState变成MonthSelectorState公有访问 用于在调用MonthSelector的setSelectedDateStart时 可以同时调用外层的setSelectedDateStart
   GlobalKey<MonthSelectorState> monthSelectorStateKey = GlobalKey();
 
@@ -41,7 +41,7 @@ class _CashAppHomePageState extends State<CashAppHomePage> {
                   sliver: MultiSliver(
                     children: [
                       SliverAppBar(
-                        title: Text('交易'),
+                        title: const Text('交易'),
                         actions: [
                           IconButton(
                             tooltip: '过滤条件',

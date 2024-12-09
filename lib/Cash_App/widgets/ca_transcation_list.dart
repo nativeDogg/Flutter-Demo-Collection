@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_collect/Cash_App/common/ca_enum.dart';
+import 'package:flutter_demo_collect/Cash_App/data/index.dart';
 import 'package:flutter_demo_collect/Cash_App/model/index.dart';
 import 'package:flutter_demo_collect/Cash_App/widgets/ca_transcation_item.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -16,7 +17,7 @@ enum TransactionEntriesRenderType {
 }
 
 final transcationItems = [
-  TransactionWithCategory(
+  TransactionWithCategoryModel(
     category: TransactionCategoryModel(
       categoryPk: 'C001',
       name: '运动',
@@ -38,7 +39,7 @@ final transcationItems = [
       income: true,
     ),
   ),
-  TransactionWithCategory(
+  TransactionWithCategoryModel(
     category: TransactionCategoryModel(
       categoryPk: 'C002',
       name: '游泳',
@@ -60,7 +61,7 @@ final transcationItems = [
       income: false,
     ),
   ),
-  TransactionWithCategory(
+  TransactionWithCategoryModel(
     category: TransactionCategoryModel(
       categoryPk: 'C003',
       name: '娱乐',
@@ -85,13 +86,35 @@ final transcationItems = [
 
 class CaTransactionList extends StatefulWidget {
   final TransactionEntriesRenderType sliverType;
-  const CaTransactionList({super.key, required this.sliverType});
+
+  /// 搜索过滤条件
+  final SearchFilters? searchFilters;
+  const CaTransactionList({
+    super.key,
+    required this.sliverType,
+    this.searchFilters,
+  });
 
   @override
   State<CaTransactionList> createState() => _CaTransactionListState();
 }
 
 class _CaTransactionListState extends State<CaTransactionList> {
+  // 判断数据来源
+  List<TransactionWithCategoryModel> _judgeDataSource() {
+    List<TransactionWithCategoryModel> result = [];
+    if (widget.searchFilters != null) {
+      widget.searchFilters!.expenseIncome.contains(ExpenseIncome.income)
+          ? result.addAll([...result, ...onlyIncomeTranList])
+          : null;
+      widget.searchFilters!.expenseIncome.contains(ExpenseIncome.expense)
+          ? result.addAll([...result, ...onlyExpenseTranList])
+          : null;
+    }
+
+    return result;
+  }
+
   // 创建列表
   _buildTransactionList() {
     return Builder(
@@ -107,31 +130,10 @@ class _CaTransactionListState extends State<CaTransactionList> {
                 child: const SizedBox.shrink(),
               ),
               sticky: true,
-              sliver: SliverImplicitlyAnimatedList<TransactionWithCategory>(
-                // spawnIsolate: false,
+              sliver:
+                  SliverImplicitlyAnimatedList<TransactionWithCategoryModel>(
                 areItemsTheSame: (a, b) =>
                     a.transaction.transactionPk == b.transaction.transactionPk,
-                // items: [
-                //   TransactionWithCategory(
-                //     category: TransactionCategoryModel(
-                //       categoryPk: 'C001',
-                //       name: '运动',
-                //       dateCreated: DateTime.now(),
-                //       order: 1,
-                //       income: false,
-                //     ),
-                //     transaction: TransactionModel(
-                //       transactionPk: 'T001',
-                //       name: '打球🏀',
-                //       category: 'C001',
-                //       transaction: '1000',
-                //       amount: 3000,
-                //       date: DateTime.now().microsecondsSinceEpoch.toString(),
-                //       time: DateTime.now().microsecondsSinceEpoch.toString(),
-                //       income: false,
-                //     ),
-                //   )
-                // ],
                 items: transcationItems,
                 insertDuration: const Duration(microseconds: 500),
                 updateDuration: const Duration(microseconds: 500),
@@ -160,6 +162,32 @@ class _CaTransactionListState extends State<CaTransactionList> {
           );
         }
 
+        if (widget.sliverType ==
+            TransactionEntriesRenderType.implicitlyAnimatedNonSlivers) {
+          return ImplicitlyAnimatedList<TransactionWithCategoryModel>(
+            // items: transcationItems,
+            items: _judgeDataSource(),
+            areItemsTheSame: (a, b) =>
+                a.transaction.transactionPk.toString() ==
+                b.transaction.transactionPk.toString(),
+            itemBuilder: (context, animation, item, index) {
+              return ColoredBox(
+                color: Colors.white,
+                child: SizeFadeTransition(
+                  sizeFraction: 0.7,
+                  curve: Curves.easeInOut,
+                  animation: animation,
+                  child: _buildTransactionItem(
+                    transcationItems,
+                    item,
+                    index,
+                  ),
+                ),
+              );
+            },
+          );
+        }
+
         return MultiSliver(
           children: widgetOuts,
         );
@@ -168,12 +196,12 @@ class _CaTransactionListState extends State<CaTransactionList> {
   }
 
   // 创建单个item
-  _buildTransactionItem(items, TransactionWithCategory item, index) {
+  _buildTransactionItem(items, TransactionWithCategoryModel item, index) {
     // 使用组件
     return CaTranscationItem(
       listID: 'Transaction',
       openPage: Scaffold(
-        appBar: AppBar(title: Text('Transcation Details')),
+        appBar: AppBar(title: const Text('Transcation Details')),
       ),
       transaction: item.transaction,
       category: item.category,

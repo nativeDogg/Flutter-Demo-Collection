@@ -108,7 +108,8 @@ class MonthSelectorState extends State<MonthSelector> {
             bool isToday = judgeIsToday(currentDateTime);
 
             return Container(
-              color: Theme.of(context).canvasColor,
+              // color: Theme.of(context).canvasColor,
+              color: Colors.white,
               padding: const EdgeInsetsDirectional.only(start: 0, end: 0),
               child: Container(
                 width: monthWidth,

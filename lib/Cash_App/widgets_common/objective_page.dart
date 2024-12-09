@@ -52,19 +52,35 @@ class __ObjectivePageContentState extends State<_ObjectivePageContent> {
   /// 是否正在播放
   bool hasPlayedConfetti = false;
 
+  late String? selectIcon;
+
+  @override
+  void initState() {
+    selectIcon = widget.category.iconName;
+    confettiController.addListener(confettiListener);
+
+    super.initState();
+  }
+
   void openSelectIconPopup() {
-    print('点击');
     showMaterialModalBottomSheet(
       context: context,
       builder: (context) {
+        print('目前选中的类别图标:${widget.category.iconName}');
         return CaPopupFrameWork(
           title: 'Select Category Icon',
           // child: Container(),
           child: SelectCategoryImage(
-            setSelectedImage: (String? str) {
-              return '';
+            setSelectedImage: (String? selectionImage) {
+              // return selectIcon;
+              // setState(() {
+              //   selectIcon = (selectionImage ?? '')
+              //       .replaceFirst('assets/categories/', '');
+              //   print('我是selectIcon:$selectIcon');
+              // });
             },
-            selectedImage: "assets/categories/${widget.category.iconName}",
+            selectedImage:
+                "assets/categories/${selectIcon ?? widget.category.iconName}",
           ),
         );
       },
@@ -78,12 +94,6 @@ class __ObjectivePageContentState extends State<_ObjectivePageContent> {
         if (mounted) confettiController.stop();
       });
     }
-  }
-
-  @override
-  void initState() {
-    confettiController.addListener(confettiListener);
-    super.initState();
   }
 
   @override

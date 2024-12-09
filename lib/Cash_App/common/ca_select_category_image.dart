@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_demo_collect/Cash_App/common/ca_tappable.dart';
+import 'package:flutter_demo_collect/Cash_App/common/ca_text_input.dart';
 import 'package:flutter_demo_collect/Cash_App/struct/iconObjects.dart';
 
 class SelectCategoryImage extends StatefulWidget {
@@ -24,26 +26,97 @@ class SelectCategoryImage extends StatefulWidget {
 }
 
 class _SelectCategoryImageState extends State<SelectCategoryImage> {
+  String? selectedImage;
+
+  /// emoji搜索关键字
+  String searchTerm = "";
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.selectedImage != null) {
+      setState(() {
+        selectedImage =
+            widget.selectedImage!.replaceAll("assets/categories/", "");
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: Wrap(
-            children: iconObjects.map((IconForCategory ifc) {
-              return ImageIcon(
-                sizePadding: 8,
-                margin: EdgeInsetsDirectional.all(5),
-                size: 50,
-                iconPath: 'assets/categories/${ifc.icon}',
-                onTap: () {},
-                outline: widget.selectedImage == ifc.icon,
-                color: Colors.transparent,
-              );
-            }).toList(),
-          ),
-        )
+        const SizedBox(height: 10),
+        _buildEmojiSearch(),
+        const SizedBox(height: 10),
+        _buildEmojiList(),
       ],
+    );
+  }
+
+  _buildEmojiSearch() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(
+          child: CaTextInput(
+            labelText: "Search Emoji",
+
+            icon: Icons.search_outlined,
+            onSubmitted: (value) {},
+            onChanged: (value) {
+              setState(() {
+                searchTerm = value.trim();
+              });
+            },
+            padding: const EdgeInsetsDirectional.all(0),
+            // 如果是web平台运行 则自动获取焦点
+            autoFocus: kIsWeb,
+          ),
+        ),
+      ],
+    );
+  }
+
+  _buildEmojiList() {
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: 500),
+      child: Wrap(
+        // alignment: WrapAlignment.start,
+        children: iconObjects.map((IconForCategory ifc) {
+          bool show = false;
+          // 通过在输入框中输入的关键字来过滤图标
+          if (searchTerm.isNotEmpty) {
+            for (var i = 0; i < ifc.tags.length; i++) {
+              ifc.tags[i].toLowerCase().contains(searchTerm.toLowerCase())
+                  ? show = true
+                  : show = false;
+            }
+          } else {
+            show = true;
+          }
+          if (show == true) {
+            return ImageIcon(
+              sizePadding: 8,
+              margin: const EdgeInsetsDirectional.all(5),
+              size: 50,
+              iconPath: 'assets/categories/${ifc.icon}',
+              onTap: () {
+                widget.setSelectedImage(ifc.icon);
+                setState(() {
+                  selectedImage = ifc.icon;
+                });
+                Navigator.pop(context);
+              },
+              outline: widget.selectedImage == ifc.icon,
+              color: Colors.transparent,
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        }).toList(),
+      ),
     );
   }
 }

@@ -34,3 +34,9 @@ enum TransactionSpecialType {
   /// 债务
   debt
 }
+
+/// 收入支出枚举
+enum ExpenseIncome {
+  income,
+  expense,
+}

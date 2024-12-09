@@ -56,33 +56,36 @@ class CaTranscationItem extends StatelessWidget {
     required bool selected,
     required bool? areTransactionsBeingSelected,
   }) {
-    return Padding(
-      padding: const EdgeInsetsDirectional.only(end: 7),
-      child: Row(
-        children: [
-          // 选中按钮
-          _buildTransactionCheck(
-            selected: selected,
-            areTransactionsBeingSelected: areTransactionsBeingSelected,
-            openContainer: openContainer,
-          ),
-          // 类型图标
-          _buildCategoryIcon(),
-          // 处理按钮 撤销操作等
-          _buildActionBtn(
-              context,
-              const EdgeInsetsDirectional.only(
-                start: 3,
-                top: 5,
-                bottom: 5,
-                end: 0,
-              )),
-          // 交易名称以及各种预算类型tag
-          _buildCategoryName(),
+    return ColoredBox(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsetsDirectional.only(end: 7),
+        child: Row(
+          children: [
+            // 选中按钮
+            _buildTransactionCheck(
+              selected: selected,
+              areTransactionsBeingSelected: areTransactionsBeingSelected,
+              openContainer: openContainer,
+            ),
+            // 类型图标
+            _buildCategoryIcon(),
+            // 处理按钮 撤销操作等
+            _buildActionBtn(
+                context,
+                const EdgeInsetsDirectional.only(
+                  start: 3,
+                  top: 5,
+                  bottom: 5,
+                  end: 0,
+                )),
+            // 交易名称以及各种预算类型tag
+            _buildCategoryName(),
 
-          const Spacer(),
-          _buildCategoryAmount(),
-        ],
+            const Spacer(),
+            _buildCategoryAmount(),
+          ],
+        ),
       ),
     );
   }
@@ -249,7 +252,7 @@ class _TransactionSelectionCheck extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSize(
-      duration: const Duration(milliseconds: 550),
+      duration: const Duration(milliseconds: 1000),
       curve: Curves.easeInOutCubicEmphasized,
       // 选中的时候出现
       child: selected || areTransactionsBeingSelected == true
@@ -459,7 +462,13 @@ class TransactionCategoryIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildContent(context);
+    return AnimatedContainer(
+      color: Colors.white,
+      clipBehavior: Clip.none,
+      duration: const Duration(seconds: 1),
+      curve: Curves.easeInOutCubicEmphasized,
+      child: _buildContent(context),
+    );
   }
 }
 
@@ -645,6 +654,7 @@ class _TransactionEntryAmount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('我是是否收入:${transaction.income}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -712,7 +722,7 @@ class InOutComeArrow extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedRotation(
       turns: isIncome ? 0.5 : 0,
-      duration: const Duration(milliseconds: 1700),
+      duration: const Duration(milliseconds: 800),
       curve: const ElasticInCurve(0.5),
       child: SizedBox(
         width: width,

@@ -3,8 +3,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_demo_collect/Cash_App/ca_home.dart';
-import 'package:flutter_demo_collect/main.dart';
+
 import 'package:intl/intl.dart';
 
 /// 根据手机系统获取月份
