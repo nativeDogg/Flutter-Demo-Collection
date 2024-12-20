@@ -226,3 +226,163 @@ String convertToPercent(double amount,
 
   return absoluteZeroString(roundedAmount) + "%";
 }
+
+/// 将数字转成金额的格式
+
+String convertToMoney(double amount,
+    {String? currencyKey,
+    double? finalNumber,
+    int? decimals,
+    bool? allDecimals,
+    bool? addCurrencyName,
+    bool forceHideCurrencyName = false,
+    bool forceAllDecimals = false,
+    bool forceNonCustomNumberFormat = false,
+    bool forceCustomNumberFormat = false,
+    String? customSymbol,
+    String Function(String)? editFormattedOutput,
+    bool forceCompactNumberFormatter = false,
+    bool forceDefaultNumberFormatter = false,
+    bool forceAbsoluteZero = true,
+    NumberFormat Function(int? decimalDigits, String? locale, String? symbol)?
+        getCustomNumberFormat}) {
+  int numberDecimals = decimals ?? 2;
+  numberDecimals = numberDecimals > 2 &&
+          (finalNumber ?? amount).toString().split('.').length > 1
+      ? (finalNumber ?? amount).toString().split('.')[1].length < numberDecimals
+          ? (finalNumber ?? amount).toString().split('.')[1].length
+          : numberDecimals
+      : numberDecimals;
+
+  if (amount == double.infinity || amount == double.negativeInfinity) {
+    return "Infinity";
+  }
+  amount = double.parse(amount.toStringAsFixed(numberDecimals));
+  if (forceAbsoluteZero) amount = absoluteZero(amount);
+  if (finalNumber != null) {
+    finalNumber = double.parse(finalNumber.toStringAsFixed(numberDecimals));
+    if (forceAbsoluteZero) finalNumber = absoluteZero(finalNumber);
+  }
+
+  int? decimalDigits = forceAllDecimals
+      ? decimals
+      // : allDecimals == true ||
+      //         hasDecimalPoints(finalNumber) ||
+      //         hasDecimalPoints(amount)
+      //     ? numberDecimals
+      //     : 0;
+      : 0;
+  String? locale = "en-US";
+
+  String? symbol = customSymbol ?? '';
+
+  bool useCustomNumberFormat =
+      forceCustomNumberFormat || (forceNonCustomNumberFormat == false);
+
+  final NumberFormat formatter;
+  if (getCustomNumberFormat != null) {
+    formatter = getCustomNumberFormat(
+        decimalDigits, locale, useCustomNumberFormat ? "" : symbol);
+  } else if (forceDefaultNumberFormatter == false &&
+      (forceCompactNumberFormatter)) {
+    formatter = NumberFormat.compactCurrency(
+      locale: locale,
+      decimalDigits: decimalDigits,
+      symbol: useCustomNumberFormat ? "" : symbol,
+    );
+    formatter.significantDigitsInUse = false;
+  } else {
+    /// 主要是使用NumberFormat.currency来格式化数字
+    formatter = NumberFormat.currency(
+      decimalDigits: decimalDigits,
+      locale: locale,
+      symbol: useCustomNumberFormat ? "" : symbol,
+    );
+  }
+  String formatOutput = formatter.format(amount).trim();
+
+  // View the entire dictionary of locale formats, through NumberFormat.currency definition
+  // numberFormatSymbols[locale] as NumberSymbols
+
+  // If there is no currency symbol, use the currency code
+  // if (forceHideCurrencyName == false &&
+  //     getCurrencyString(allWallets, currencyKey: currencyKey) == "") {
+  //   addCurrencyName = true;
+  // }
+  // String formatOutput = formatter.format(amount).trim();
+  // String? currencyName;
+  // if (addCurrencyName == true && currencyKey != null) {
+  //   currencyName = " " + currencyKey.toUpperCase();
+  // } else if (addCurrencyName == true) {
+  //   currencyName = " " +
+  //       (allWallets.indexedByPk[appStateSettings["selectedWalletPk"]]
+  //                   ?.currency ??
+  //               "")
+  //           .toUpperCase();
+  // }
+
+  // if (useCustomNumberFormat) {
+  //   formatOutput = formatOutputWithNewDelimiterAndDecimal(
+  //     amount: finalNumber ?? amount,
+  //     currencyName: currencyName,
+  //     input: formatOutput,
+  //     delimiter: appStateSettings["numberFormatDelimiter"],
+  //     decimal: appStateSettings["numberFormatDecimal"],
+  //     symbol: symbol,
+  //   );
+  // } else if (useCustomNumberFormat == false && currencyName != null) {
+  //   formatOutput = formatOutput + currencyName;
+  // }
+
+  // if (editFormattedOutput != null) {
+  //   return editFormattedOutput(formatOutput);
+  // }
+
+  return formatOutput;
+}
+
+String getWordedDateShort(
+  DateTime date,
+  BuildContext context, {
+  includeYear = false,
+  showTodayTomorrow = true,
+  lowerCaseTodayTomorrow = false,
+}) {
+  if (showTodayTomorrow && checkYesterdayTodayTomorrow(date) != false) {
+    String todayTomorrowOut = checkYesterdayTodayTomorrow(date);
+    return lowerCaseTodayTomorrow
+        ? todayTomorrowOut.toLowerCase()
+        : todayTomorrowOut;
+  }
+
+  // final locale = navigatorKey.currentContext?.locale.toString();
+
+  final locale = Localizations.localeOf(context).toString();
+
+  if (includeYear) {
+    return DateFormat.yMMMd(locale).format(date);
+  } else {
+    return DateFormat.MMMd(locale).format(date);
+  }
+}
+
+checkYesterdayTodayTomorrow(DateTime date) {
+  DateTime now = DateTime.now();
+  if (date.day == now.day && date.month == now.month && date.year == now.year) {
+    return "today";
+  }
+  DateTime tomorrow = DateTime(now.year, now.month, now.day + 1);
+  if (date.day == tomorrow.day &&
+      date.month == tomorrow.month &&
+      date.year == tomorrow.year) {
+    return "tomorrow";
+  }
+  DateTime yesterday = now.subtract(Duration(days: 1));
+  if (date.day == yesterday.day &&
+      date.month == yesterday.month &&
+      date.year == yesterday.year) {
+    return "yesterday";
+  }
+
+  return false;
+}

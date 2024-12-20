@@ -40,3 +40,5 @@ enum ExpenseIncome {
   income,
   expense,
 }
+
+enum BudgetReoccurence { custom, daily, weekly, monthly, yearly }

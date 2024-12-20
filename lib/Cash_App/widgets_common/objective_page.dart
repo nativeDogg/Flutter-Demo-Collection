@@ -66,7 +66,7 @@ class __ObjectivePageContentState extends State<_ObjectivePageContent> {
     showMaterialModalBottomSheet(
       context: context,
       builder: (context) {
-        print('目前选中的类别图标:${widget.category.iconName}');
+        // print('目前选中的类别图标:${widget.category.iconName}');
         return CaPopupFrameWork(
           title: 'Select Category Icon',
           // child: Container(),
@@ -107,6 +107,7 @@ class __ObjectivePageContentState extends State<_ObjectivePageContent> {
     return Stack(
       children: [
         CaPageFramework(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           appBarBackgroundColor:
               Theme.of(context).colorScheme.secondaryContainer,
           // backgroundColor: color,
@@ -168,6 +169,12 @@ class __ObjectivePageContentState extends State<_ObjectivePageContent> {
                             children: [
                               /// 种类图标
                               TransactionCategoryIcon(
+                                margin: EdgeInsetsDirectional.only(
+                                  start: 12,
+                                  end: 8,
+                                  top: 8,
+                                  bottom: 8,
+                                ),
                                 size: 40,
                                 sizePadding: 30,
                                 borderRadius: 100,

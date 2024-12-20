@@ -7,72 +7,10 @@ import 'package:flutter_demo_collect/Cash_App/common/ca_animate.dart';
 import 'package:flutter_demo_collect/Cash_App/common/ca_function.dart';
 import 'package:flutter_demo_collect/Cash_App/common/ca_text_font.dart';
 import 'package:flutter_demo_collect/Cash_App/common/ca_widgets.dart';
+import 'package:flutter_demo_collect/Cash_App/data/index.dart';
 import 'package:flutter_demo_collect/Cash_App/model/index.dart';
 import 'package:flutter_demo_collect/Cash_App/widgets/ca_home_page/transaction_chart/ca_category_entry.dart';
 import 'package:flutter_demo_collect/Cash_App/widgets/ca_home_page/transaction_chart/ca_pin_wheel_reval.dart';
-
-List<CategoryWithTotalModel> categoriesWithTotalData = [
-  CategoryWithTotalModel(
-    category: TransactionCategoryModel(
-      categoryPk: '10',
-      name: '旅行',
-      dateCreated: DateTime.now(),
-      colour: '#f4ba61',
-      order: 10,
-      income: false,
-      iconName: 'plane.png',
-    ),
-    total: 1000.00,
-  ),
-  CategoryWithTotalModel(
-    category: TransactionCategoryModel(
-      categoryPk: '6',
-      name: '定期账单与费用',
-      dateCreated: DateTime.now(),
-      order: 0,
-      colour: '#91c58a',
-      income: false,
-      iconName: 'bills.png',
-    ),
-    total: 800.00,
-  ),
-  CategoryWithTotalModel(
-    category: TransactionCategoryModel(
-      categoryPk: '1',
-      name: '三餐',
-      dateCreated: DateTime.now(),
-      order: 8,
-      income: false,
-      colour: '#94a3ad',
-      iconName: 'cutlery.png',
-    ),
-    total: 450.00,
-  ),
-  CategoryWithTotalModel(
-    category: TransactionCategoryModel(
-      categoryPk: '5',
-      name: '娱乐',
-      dateCreated: DateTime.now(),
-      order: 4,
-      income: false,
-      colour: '#78b3f0',
-      iconName: 'popcorn.png',
-    ),
-    total: 450.00,
-  ),
-  CategoryWithTotalModel(
-    category: TransactionCategoryModel(
-      categoryPk: '9',
-      name: '交通',
-      dateCreated: DateTime.now(),
-      order: 4,
-      income: false,
-      colour: '#fdf288',
-      iconName: 'sports.png',
-    ),
-    total: 666.00,
-  ),
-];
 
 class TotalSpentCategoriesSummary {
   double totalSpent;
@@ -140,8 +78,6 @@ class _CaPieChartCategorySummaryState extends State<CaPieChartCategorySummary> {
     });
   }
 
-  //
-
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
@@ -175,7 +111,7 @@ class _CaPieChartCategorySummaryState extends State<CaPieChartCategorySummary> {
                           flex: 1,
                           child: Padding(
                             padding: EdgeInsetsDirectional.only(start: 12),
-                            child: _CaPieChartCategoryLegend(
+                            child: CaPieChartCategoryLegend(
                               categoriesWithTotal: categoriesWithTotal
                                   .take(boxConstraints.maxWidth < 420 ? 3 : 5)
                                   .toList(),
@@ -191,7 +127,7 @@ class _CaPieChartCategorySummaryState extends State<CaPieChartCategorySummary> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(right: 45),
-                                child: _CaPieChartCategoryWrapper(
+                                child: CaPieChartCategoryWrapper(
                                   disableLarge: true,
                                   pieChartDisplayStateKey:
                                       pieChartDisplayStateKey,
@@ -259,8 +195,8 @@ class _CaPieChartCategorySummaryState extends State<CaPieChartCategorySummary> {
   }
 }
 
-class _CaPieChartCategoryLegend extends StatelessWidget {
-  const _CaPieChartCategoryLegend(
+class CaPieChartCategoryLegend extends StatelessWidget {
+  const CaPieChartCategoryLegend(
       {required this.categoriesWithTotal, super.key});
   final List<CategoryWithTotalModel> categoriesWithTotal;
 
@@ -300,7 +236,7 @@ class _CaPieChartCategoryLegend extends StatelessWidget {
 }
 
 /// 一个包装过的chart饼图 包括饼图本身、中间挖一个空洞、以及中间给一个过渡的白色圆圈
-class _CaPieChartCategoryWrapper extends StatelessWidget {
+class CaPieChartCategoryWrapper extends StatelessWidget {
   /// 数据data 是CategoryWithTotal类型(包括categoryPk和total)
   final List<CategoryWithTotalModel> data;
 
@@ -323,7 +259,7 @@ class _CaPieChartCategoryWrapper extends StatelessWidget {
   /// 是否禁用大图
   final bool disableLarge;
 
-  const _CaPieChartCategoryWrapper({
+  const CaPieChartCategoryWrapper({
     super.key,
     required this.data,
     required this.totalSpent,

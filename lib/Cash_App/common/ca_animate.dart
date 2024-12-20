@@ -1,6 +1,143 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_collect/Cash_App/common/ca_function.dart';
+
+class AnimatedExpanded extends StatefulWidget {
+  final Widget child;
+  final bool expand;
+  final Duration duration;
+  final Curve sizeCurve;
+  final Axis axis;
+
+  AnimatedExpanded({
+    this.expand = false,
+    required this.child,
+    this.duration = const Duration(milliseconds: 425),
+    this.sizeCurve = Curves.fastOutSlowIn,
+    this.axis = Axis.vertical,
+    super.key,
+  });
+
+  @override
+  _AnimatedExpandedState createState() => _AnimatedExpandedState();
+}
+
+class _AnimatedExpandedState extends State<AnimatedExpanded>
+    with SingleTickerProviderStateMixin {
+  late AnimationController expandController;
+  late Animation<double> sizeAnimation;
+  late Animation<double> fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    prepareAnimations();
+  }
+
+  void prepareAnimations() {
+    expandController = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+      value: widget.expand ? 1.0 : 0.0,
+    );
+    sizeAnimation = CurvedAnimation(
+      parent: expandController,
+      curve: widget.sizeCurve,
+    );
+    fadeAnimation = CurvedAnimation(
+      parent: expandController,
+      curve: Curves.easeInOut,
+    );
+    if (widget.expand) {
+      expandController.value = 1.0;
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant AnimatedExpanded oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _runExpandCheck();
+  }
+
+  void _runExpandCheck() {
+    if (widget.expand) {
+      expandController.forward();
+    } else {
+      expandController.reverse();
+    }
+  }
+
+  @override
+  void dispose() {
+    expandController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: fadeAnimation,
+      child: SizeTransition(
+        axis: widget.axis,
+        axisAlignment: 1.0,
+        sizeFactor: sizeAnimation,
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+class FadeIn extends StatefulWidget {
+  FadeIn({Key? key, required this.child, this.duration}) : super(key: key);
+
+  final Widget child;
+  final Duration? duration;
+
+  @override
+  _FadeInState createState() => _FadeInState();
+}
+
+class _FadeInState extends State<FadeIn> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacityAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: widget.duration ?? Duration(milliseconds: 500),
+      vsync: this,
+    );
+
+    _controller.forward();
+
+    _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // if (appStateSettings["batterySaver"]) {
+    //   return widget.child;
+    // }
+    return AnimatedBuilder(
+      animation: _opacityAnimation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: _opacityAnimation.value,
+          child: child,
+        );
+      },
+      child: widget.child,
+    );
+  }
+}
 
 // 透明伸缩动画组件
 class AnimatedScaleOpacity extends StatelessWidget {
@@ -385,5 +522,54 @@ class _CaAnimateCircularProgressPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
+  }
+}
+
+class CaAnimateProgress extends StatefulWidget {
+  final Color color;
+  const CaAnimateProgress({
+    super.key,
+    required this.color,
+  });
+
+  @override
+  State<CaAnimateProgress> createState() => _CaAnimateProgressState();
+}
+
+class _CaAnimateProgressState extends State<CaAnimateProgress> {
+  bool animateIn = false;
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        animateIn = true;
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double percent = 50;
+    return AnimatedFractionallySizedBox(
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeInOutCubic,
+      widthFactor: animateIn ? (percent > 100 ? 1 : percent / 100) : 0,
+      heightFactor: 1,
+      child: Stack(
+        children: [
+          // 进度条的颜色
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadiusDirectional.circular(0),
+              color: dynamicPastel(context, widget.color),
+            ),
+          ),
+
+          ///
+        ],
+      ),
+    );
   }
 }

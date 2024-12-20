@@ -366,47 +366,67 @@ class TransactionCategoryIcon extends StatelessWidget {
   /// 点击事件
   final VoidCallback? onTap;
 
+  /// 边距
+  // final EdgeInsetsDirectional? margin;
+
   Widget _buildContent(context) {
     return Column(
       children: [
-        GestureDetector(
-          onTap: onTap,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 1000),
-            margin: EdgeInsetsDirectional.only(
-              start: 12,
-              end: 8,
-              top: 8,
-              bottom: label ? 2 : 8,
-            ),
-            height: size + sizePadding,
-            width: size + sizePadding,
-            decoration: BoxDecoration(
-              // color: Colors.orange,
-              borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-            ),
-            child: ClipOval(
-              child: Tappable(
-                color: noBackground
-                    ? Colors.transparent
-                    : dynamicPastel(
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 500),
+          margin: margin ??
+              EdgeInsetsDirectional.only(
+                start: 12,
+                end: 8,
+                top: 8,
+                bottom: label ? 2 : 8,
+              ),
+          height: size + sizePadding,
+          width: size + sizePadding,
+          decoration: outline
+              ? BoxDecoration(
+                  border: Border.all(
+                    color: dynamicPastel(
                         context,
                         HexColor(category.colour,
                             defaultColor:
                                 Theme.of(context).colorScheme.primary),
-                        amountLight: 0.55,
-                        amountDark: 0.35,
-                      ),
-                // emoji图标
-                child: Center(
-                  child: (category.emojiIconName == null &&
-                          category.iconName != null
-                      ? CacheCategoryIcon(
-                          iconName: category.iconName ?? "",
-                          size: size,
-                        )
-                      : const SizedBox()),
+                        amountLight: 0.5,
+                        amountDark: 0.4,
+                        inverse: true),
+                    width: 3,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+                )
+              : BoxDecoration(
+                  border: Border.all(
+                    color: Colors.transparent,
+                    width: 0,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                 ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+            child: Tappable(
+              onTap: onTap,
+              color: noBackground
+                  ? Colors.transparent
+                  : dynamicPastel(
+                      context,
+                      HexColor(category.colour,
+                          defaultColor: Theme.of(context).colorScheme.primary),
+                      amountLight: 0.55,
+                      amountDark: 0.35,
+                    ),
+              // emoji图标
+              child: Center(
+                child:
+                    (category.emojiIconName == null && category.iconName != null
+                        ? CacheCategoryIcon(
+                            iconName: category.iconName ?? "",
+                            size: size,
+                          )
+                        : const SizedBox()),
               ),
             ),
           ),
@@ -654,7 +674,7 @@ class _TransactionEntryAmount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('我是是否收入:${transaction.income}');
+    // print('我是是否收入:${transaction.income}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,

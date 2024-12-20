@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_collect/Cash_App/ca_home_page.dart';
 import 'package:flutter_demo_collect/Food_App/model/recipe_model.dart';
+import 'package:flutter_demo_collect/Test_App/constraint.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,8 +22,10 @@ class MyApp extends StatelessWidget {
       // 食物
       // home: FoodAppHomePage(recipeItems: recipeItem),
       // 记账
-      // home: CashAppHomePage(),
       home: CaHomePage(),
+
+      // 测试
+      // home: ConstraintApp(),
     );
   }
 }

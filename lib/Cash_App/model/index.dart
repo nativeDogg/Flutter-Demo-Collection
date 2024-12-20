@@ -193,12 +193,15 @@ class CaBudgetModel {
   /// 预算结束时间
   final DateTime endDate;
 
-  /// 钱包id
-  final List<String>? walletFks;
+  /// 是否是收入
+  final bool income;
 
-  /// 类别id
-  final List<String>? categoryFks;
-  final List<String>? categoryFksExclude;
+  // /// 钱包id
+  // final List<String>? walletFks;
+
+  // /// 类别id
+  // final List<String>? categoryFks;
+  // final List<String>? categoryFksExclude;
 
   CaBudgetModel({
     required this.budgetPk,
@@ -207,8 +210,22 @@ class CaBudgetModel {
     this.colour,
     required this.startDate,
     required this.endDate,
-    this.walletFks,
-    this.categoryFks,
-    this.categoryFksExclude,
+    this.income = false,
+    // this.walletFks,
+    // this.categoryFks,
+    // this.categoryFksExclude,
   }) {}
+}
+
+class Pair {
+  Pair(this.x, this.y, {this.dateTime});
+
+  double x;
+  double y;
+  DateTime? dateTime;
+
+  @override
+  String toString() {
+    return 'x: $x, y: $y, dateTime: $dateTime';
+  }
 }

@@ -25,6 +25,7 @@ class CaPageFrameWorkSliverAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget appBar = SliverAppBar(
+      backgroundColor: appBarBackgroundColor,
       surfaceTintColor: Colors.transparent,
       bottom: bottom,
       shadowColor: Platform.isIOS

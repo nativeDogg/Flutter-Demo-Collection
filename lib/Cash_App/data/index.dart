@@ -159,3 +159,157 @@ final List<TransactionWithCategoryModel> onlyExpenseTranList = [
     ),
   )
 ];
+
+/// 种类列表
+List<TransactionCategoryModel> categoryList = [
+  TransactionCategoryModel(
+    categoryPk: '10',
+    name: '旅行',
+    dateCreated: DateTime.now(),
+    colour: '#f4ba61',
+    order: 10,
+    income: false,
+    iconName: 'plane.png',
+  ),
+  TransactionCategoryModel(
+    categoryPk: '6',
+    name: '定期账单与费用',
+    dateCreated: DateTime.now(),
+    order: 0,
+    colour: '#91c58a',
+    income: false,
+    iconName: 'bills.png',
+  ),
+  TransactionCategoryModel(
+    categoryPk: '1',
+    name: '三餐',
+    dateCreated: DateTime.now(),
+    order: 8,
+    income: false,
+    colour: '#94a3ad',
+    iconName: 'cutlery.png',
+  ),
+  TransactionCategoryModel(
+    categoryPk: '5',
+    name: '娱乐',
+    dateCreated: DateTime.now(),
+    order: 4,
+    income: false,
+    colour: '#78b3f0',
+    iconName: 'popcorn.png',
+  ),
+  TransactionCategoryModel(
+    categoryPk: '9',
+    name: '交通',
+    dateCreated: DateTime.now(),
+    order: 4,
+    income: false,
+    colour: '#fdf288',
+    iconName: 'sports.png',
+  ),
+  TransactionCategoryModel(
+    categoryPk: '14',
+    name: '礼物',
+    dateCreated: DateTime.now(),
+    order: 4,
+    income: false,
+    colour: '#e78277',
+    iconName: 'envelope.png',
+  ),
+  TransactionCategoryModel(
+    categoryPk: '12',
+    name: '美妆',
+    dateCreated: DateTime.now(),
+    order: 4,
+    income: false,
+    colour: '#ae6cc2',
+    iconName: 'shopping.png',
+  )
+];
+
+List<CategoryWithTotalModel> categoriesWithTotalData = [
+  CategoryWithTotalModel(
+    category: TransactionCategoryModel(
+      categoryPk: '10',
+      name: '旅行',
+      dateCreated: DateTime.now(),
+      colour: '#f4ba61',
+      order: 10,
+      income: false,
+      iconName: 'plane.png',
+    ),
+    total: 1000.00,
+  ),
+  CategoryWithTotalModel(
+    category: TransactionCategoryModel(
+      categoryPk: '6',
+      name: '定期账单与费用',
+      dateCreated: DateTime.now(),
+      order: 0,
+      colour: '#91c58a',
+      income: false,
+      iconName: 'bills.png',
+    ),
+    total: 800.00,
+  ),
+  CategoryWithTotalModel(
+    category: TransactionCategoryModel(
+      categoryPk: '1',
+      name: '三餐',
+      dateCreated: DateTime.now(),
+      order: 8,
+      income: false,
+      colour: '#94a3ad',
+      iconName: 'cutlery.png',
+    ),
+    total: 450.00,
+  ),
+  CategoryWithTotalModel(
+    category: TransactionCategoryModel(
+      categoryPk: '5',
+      name: '娱乐',
+      dateCreated: DateTime.now(),
+      order: 4,
+      income: false,
+      colour: '#78b3f0',
+      iconName: 'popcorn.png',
+    ),
+    total: 450.00,
+  ),
+  CategoryWithTotalModel(
+    category: TransactionCategoryModel(
+      categoryPk: '9',
+      name: '交通',
+      dateCreated: DateTime.now(),
+      order: 4,
+      income: false,
+      colour: '#fdf288',
+      iconName: 'sports.png',
+    ),
+    total: 666.00,
+  ),
+  CategoryWithTotalModel(
+    category: TransactionCategoryModel(
+      categoryPk: '14',
+      name: '礼物',
+      dateCreated: DateTime.now(),
+      order: 4,
+      income: false,
+      colour: '#e78277',
+      iconName: 'envelope.png',
+    ),
+    total: 388.00,
+  ),
+  CategoryWithTotalModel(
+    category: TransactionCategoryModel(
+      categoryPk: '12',
+      name: '美妆',
+      dateCreated: DateTime.now(),
+      order: 4,
+      income: false,
+      colour: '#ae6cc2',
+      iconName: 'shopping.png',
+    ),
+    total: 666.00,
+  ),
+];

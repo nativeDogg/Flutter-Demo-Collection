@@ -121,6 +121,8 @@ class _CaTransactionListState extends State<CaTransactionList> {
       builder: (context) {
         List<Widget> widgetOuts = [];
         // 根据各种要求生成widgetOuts
+
+        /// 如果sliverType 为 implicitlyAnimatedSlivers
         if (widget.sliverType ==
             TransactionEntriesRenderType.implicitlyAnimatedSlivers) {
           widgetOuts.add(
@@ -153,23 +155,27 @@ class _CaTransactionListState extends State<CaTransactionList> {
               ),
             ),
           );
-        }
 
-        if (widget.sliverType ==
-            TransactionEntriesRenderType.implicitlyAnimatedSlivers) {
           return MultiSliver(
             children: widgetOuts,
           );
         }
 
+        /// 如果sliverType 为 implicitlyAnimatedNonSlivers
         if (widget.sliverType ==
             TransactionEntriesRenderType.implicitlyAnimatedNonSlivers) {
-          return ImplicitlyAnimatedList<TransactionWithCategoryModel>(
-            // items: transcationItems,
-            items: _judgeDataSource(),
-            areItemsTheSame: (a, b) =>
-                a.transaction.transactionPk.toString() ==
-                b.transaction.transactionPk.toString(),
+          final result = _judgeDataSource();
+          for (var i = 0; i < result.length; i++) {
+            TransactionWithCategoryModel item = result[i];
+            widgetOuts.add(
+              _buildTransactionItem(transcationItems, item, i),
+            );
+          }
+
+          return ImplicitlyAnimatedList<Widget>(
+            physics: const NeverScrollableScrollPhysics(),
+            items: widgetOuts,
+            areItemsTheSame: (a, b) => a.key.toString() == b.key.toString(),
             itemBuilder: (context, animation, item, index) {
               return ColoredBox(
                 color: Colors.white,
@@ -177,11 +183,7 @@ class _CaTransactionListState extends State<CaTransactionList> {
                   sizeFraction: 0.7,
                   curve: Curves.easeInOut,
                   animation: animation,
-                  child: _buildTransactionItem(
-                    transcationItems,
-                    item,
-                    index,
-                  ),
+                  child: item,
                 ),
               );
             },

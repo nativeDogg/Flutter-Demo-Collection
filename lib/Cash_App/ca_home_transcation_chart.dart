@@ -29,10 +29,10 @@ class _CaHomeTranscationChartState extends State<CaHomeTranscationChart> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: const Color(0x2D5A5A5A).withAlpha(30),
-                blurRadius: 20,
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 5,
                 offset: const Offset(0, 0),
-                spreadRadius: 8,
+                spreadRadius: 1,
               ),
             ],
             borderRadius: BorderRadiusDirectional.circular(borderRadius),

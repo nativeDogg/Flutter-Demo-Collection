@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_collect/Cash_App/common/ca_popup_frame_work.dart';
 import 'package:flutter_demo_collect/Cash_App/common/ca_sliver.dart';
 import 'package:flutter_demo_collect/Cash_App/widgets/ca_month_transaction/ca_month_selector.dart';
+import 'package:flutter_demo_collect/Cash_App/widgets/ca_month_transaction/search_filter/ca_search_filter.dart';
 import 'package:flutter_demo_collect/Cash_App/widgets/ca_multi_direction_infinite_scroll.dart';
 import 'package:flutter_demo_collect/Cash_App/widgets/ca_transcation_list.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class CaViewMonthTranscation extends StatefulWidget {
@@ -22,6 +25,44 @@ class _CaViewMonthTranscationState extends State<CaViewMonthTranscation> {
   void initState() {
     _pageController = PageController(initialPage: 1000000);
     super.initState();
+  }
+
+  Future<void> selectFilters(BuildContext context) async {
+    // await openBottomSheet(
+    //   context,
+    //   PopupFramework(
+    //     title: "filters".tr(),
+    //     hasPadding: false,
+    //     child: TransactionFiltersSelection(
+    //       setSearchFilters: setSearchFilters,
+    //       searchFilters: searchFilters,
+    //       clearSearchFilters: clearSearchFilters,
+    //     ),
+    //   ),
+    // );
+    // Future.delayed(Duration(milliseconds: 250), () {
+    //   updateSettings(
+    //     "transactionsListPageSetFiltersString",
+    //     searchFilters.getFilterString(),
+    //     updateGlobalState: false,
+    //   );
+    //   setState(() {});
+    // });
+    return showMaterialModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+          ),
+          constraints: const BoxConstraints(maxHeight: 600, minHeight: 600),
+          child: CaPopupFrameWork(
+            child: CaTransactionFilter(),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -46,10 +87,11 @@ class _CaViewMonthTranscationState extends State<CaViewMonthTranscation> {
                         backgroundColor: Colors.white,
                         title: const Text('交易'),
                         actions: [
+                          // 弹出搜索框
                           IconButton(
                             tooltip: '过滤条件',
                             onPressed: () {
-                              // selectFilters(context);
+                              selectFilters(context);
                             },
                             padding: const EdgeInsetsDirectional.all(15 - 8),
                             icon: AnimatedContainer(

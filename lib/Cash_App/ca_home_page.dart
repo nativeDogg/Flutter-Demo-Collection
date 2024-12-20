@@ -33,18 +33,14 @@ class _CaHomePageState extends State<CaHomePage> {
     return Container(
       // margin: const EdgeInsets.only(top: kToolbarHeight),
       color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Stack(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        // crossAxisAlignment: CrossAxisAlignment.center,
         // 希望 Column 只占据其子小部件所需的空间，你可以这样设置：
-        mainAxisSize: MainAxisSize.min,
+        // mainAxisSize: MainAxisSize.min,
         children: [
+          _buildHomeTransactionList(),
           _buildSlidingSelector(),
-          const SizedBox(height: 8),
-          Expanded(child: _buildHomeTransactionList()),
-          const SizedBox(height: 8),
-          _buildViewAllTransaction(),
-          const SizedBox(height: 16),
         ],
       ),
     );
@@ -76,9 +72,12 @@ class _CaHomePageState extends State<CaHomePage> {
               ? true
               : null,
     );
-    return CaTransactionList(
-      sliverType: TransactionEntriesRenderType.implicitlyAnimatedNonSlivers,
-      searchFilters: searchFilters,
+    return Padding(
+      padding: EdgeInsets.only(top: 50),
+      child: CaTransactionList(
+        sliverType: TransactionEntriesRenderType.implicitlyAnimatedNonSlivers,
+        searchFilters: searchFilters,
+      ),
     );
   }
 
@@ -91,6 +90,7 @@ class _CaHomePageState extends State<CaHomePage> {
     return Stack(
       children: [
         Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.white,
           body: ScrollbarWrap(
             child: ListView(
@@ -101,8 +101,15 @@ class _CaHomePageState extends State<CaHomePage> {
                   height: MediaQuery.of(context).size.height,
                   child: homePageTransactionList(),
                 ),
+                // ...List.generate(300, (index) {
+                //   return Text('$index');
+                // })
               ],
             ),
+          ),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: _buildViewAllTransaction(),
           ),
         ),
       ],
