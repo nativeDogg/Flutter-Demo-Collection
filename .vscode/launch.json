@@ -1,0 +1,45 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "flutter_demo_collect",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_demo_collect (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_demo_collect (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "implicitly_animated_reorderable_list-0.4.2-modified",
+            "cwd": "packages/implicitly_animated_reorderable_list-0.4.2-modified",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "implicitly_animated_reorderable_list-0.4.2-modified (profile mode)",
+            "cwd": "packages/implicitly_animated_reorderable_list-0.4.2-modified",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "implicitly_animated_reorderable_list-0.4.2-modified (release mode)",
+            "cwd": "packages/implicitly_animated_reorderable_list-0.4.2-modified",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

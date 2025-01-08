@@ -1,3 +1,4 @@
+// 为所有项目提供依赖项下载
 allprojects {
     repositories {
         google()
@@ -6,6 +7,7 @@ allprojects {
 }
 
 rootProject.buildDir = "../build"
+// 
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }

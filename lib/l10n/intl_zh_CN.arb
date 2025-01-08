@@ -1,0 +1,5 @@
+{
+  "title": "我是 17",
+  "title2": "我是 {name}",
+  "title3": "我是 {name}, 年龄是 {age}"
+}

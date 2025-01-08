@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_demo_collect/Cash_App/common/ca_enum.dart';
 import 'package:flutter_demo_collect/Cash_App/model/index.dart';
 
@@ -313,3 +314,28 @@ List<CategoryWithTotalModel> categoriesWithTotalData = [
     total: 666.00,
   ),
 ];
+
+// 搜索条件
+class SearchFilters {
+  // 是收入还是支出
+  List<ExpenseIncome> expenseIncome;
+  // 是否为正数（贷款）
+  bool? positiveCashFlow;
+  // 交易类型
+  List<TransactionSpecialType> transactionTypes;
+  // 交易金额范围
+  RangeValues? amountRange;
+  SearchFilters({
+    this.expenseIncome = const [],
+    this.positiveCashFlow, // 与 isIncome 类似，但包括任何正数（贷款）。
+    this.transactionTypes = const [],
+    this.amountRange = const RangeValues(0, 1000000),
+  }) {
+    expenseIncome = expenseIncome.isEmpty ? [] : expenseIncome;
+    positiveCashFlow = positiveCashFlow;
+    transactionTypes = transactionTypes.isEmpty ? [] : transactionTypes;
+  }
+
+  /// 清空参数
+  void clearSearchFilters() {}
+}

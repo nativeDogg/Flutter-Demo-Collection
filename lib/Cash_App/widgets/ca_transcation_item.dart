@@ -70,6 +70,7 @@ class CaTranscationItem extends StatelessWidget {
             ),
             // 类型图标
             _buildCategoryIcon(),
+
             // 处理按钮 撤销操作等
             _buildActionBtn(
                 context,
@@ -112,7 +113,7 @@ class CaTranscationItem extends StatelessWidget {
         category: category,
         size: 27,
         sizePadding: 20,
-        margin: EdgeInsetsDirectional.zero,
+        margin: EdgeInsetsDirectional.only(end: 10),
         borderRadius: 100,
         onTap: () {},
         // tintColor: categoryTintColor,
@@ -220,11 +221,14 @@ class CaTranscationItem extends StatelessWidget {
           // onTap: () => openPage,
           onLongPress: () => selectTransaction(transaction, selected, false),
           // 长按选中交易
-          child: _buildTransactionContents(
-            context,
-            openContainer: () => openPage,
-            selected: selected,
-            areTransactionsBeingSelected: areTransactionsBeingSelected,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            child: _buildTransactionContents(
+              context,
+              openContainer: () => openPage,
+              selected: selected,
+              areTransactionsBeingSelected: areTransactionsBeingSelected,
+            ),
           ),
         );
       },

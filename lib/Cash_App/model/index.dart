@@ -123,18 +123,18 @@ class TransactionWithCategoryModel {
   }
 }
 
-/// 搜索过滤条件
-class SearchFilters {
-  List<ExpenseIncome> expenseIncome;
-  bool? positiveCashFlow;
-  SearchFilters({
-    this.expenseIncome = const [],
-    this.positiveCashFlow, // 与 isIncome 类似，但包括任何正数（贷款）。
-  }) {
-    expenseIncome = expenseIncome.isEmpty ? [] : expenseIncome;
-    positiveCashFlow = positiveCashFlow;
-  }
-}
+// /// 搜索过滤条件
+// class SearchFilter {
+//   List<ExpenseIncome> expenseIncome;
+//   bool? positiveCashFlow;
+//   SearchFilter({
+//     this.expenseIncome = const [],
+//     this.positiveCashFlow, // 与 isIncome 类似，但包括任何正数（贷款）。
+//   }) {
+//     expenseIncome = expenseIncome.isEmpty ? [] : expenseIncome;
+//     positiveCashFlow = positiveCashFlow;
+//   }
+// }
 
 /// home页面 饼图数据类型
 

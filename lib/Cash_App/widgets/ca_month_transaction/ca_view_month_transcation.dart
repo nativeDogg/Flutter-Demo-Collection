@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_collect/Cash_App/common/ca_popup_frame_work.dart';
 import 'package:flutter_demo_collect/Cash_App/common/ca_sliver.dart';
+import 'package:flutter_demo_collect/Cash_App/data/index.dart';
+import 'package:flutter_demo_collect/Cash_App/model/index.dart';
 import 'package:flutter_demo_collect/Cash_App/widgets/ca_month_transaction/ca_month_selector.dart';
 import 'package:flutter_demo_collect/Cash_App/widgets/ca_month_transaction/search_filter/ca_search_filter.dart';
 import 'package:flutter_demo_collect/Cash_App/widgets/ca_multi_direction_infinite_scroll.dart';
@@ -20,34 +22,32 @@ class _CaViewMonthTranscationState extends State<CaViewMonthTranscation> {
   GlobalKey<MonthSelectorState> monthSelectorStateKey = GlobalKey();
 
   late PageController _pageController;
+  late SearchFilters searchFilters;
 
   @override
   void initState() {
     _pageController = PageController(initialPage: 1000000);
+    searchFilters = SearchFilters();
     super.initState();
   }
 
+  /// 设置过滤参数
+  void setSearchFilters(SearchFilters searchFilters) {
+    this.searchFilters = searchFilters;
+    print('我是searchFilter.expen:${searchFilters.expenseIncome}');
+    print('我是searchFilter.tran:${searchFilters.transactionTypes}');
+    print('我是searchFilter.amount:${searchFilters.amountRange}');
+  }
+
+  /// 清空过滤参数
+  void clearSearchFilters() {
+    searchFilters.clearSearchFilters();
+    // updateSettings("transactionsListPageSetFiltersString", null,
+    //     updateGlobalState: false);
+    setState(() {});
+  }
+
   Future<void> selectFilters(BuildContext context) async {
-    // await openBottomSheet(
-    //   context,
-    //   PopupFramework(
-    //     title: "filters".tr(),
-    //     hasPadding: false,
-    //     child: TransactionFiltersSelection(
-    //       setSearchFilters: setSearchFilters,
-    //       searchFilters: searchFilters,
-    //       clearSearchFilters: clearSearchFilters,
-    //     ),
-    //   ),
-    // );
-    // Future.delayed(Duration(milliseconds: 250), () {
-    //   updateSettings(
-    //     "transactionsListPageSetFiltersString",
-    //     searchFilters.getFilterString(),
-    //     updateGlobalState: false,
-    //   );
-    //   setState(() {});
-    // });
     return showMaterialModalBottomSheet(
       context: context,
       builder: (context) {
@@ -58,7 +58,11 @@ class _CaViewMonthTranscationState extends State<CaViewMonthTranscation> {
           ),
           constraints: const BoxConstraints(maxHeight: 600, minHeight: 600),
           child: CaPopupFrameWork(
-            child: CaTransactionFilter(),
+            child: CaTransactionFilter(
+              searchFilters: searchFilters,
+              setSearchFilters: setSearchFilters,
+              clearSearchFilters: clearSearchFilters,
+            ),
           ),
         );
       },
